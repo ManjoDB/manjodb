@@ -89,7 +89,7 @@ All targets are **proposals** to be fixed in the M0 RFCs before data is collecte
 
 ## 6. Open source, license, and trust
 
-`PRODUCT.md` records that everything is open source. The plan (§29) leaves the *license itself* undecided. Evidence from the field says this decision is the single most important trust signal, and the most expensive to reverse.
+`PRODUCT.md` records that everything is open source. The plan (§29) records the license decision: **Apache-2.0, adopted 2026-11-15**. This section is the reasoning behind it. Evidence from the field says the license is the single most important trust signal, and the most expensive to reverse.
 
 | Option | Open source (OSI)? | Examples in the field | Trade-off |
 | --- | --- | --- | --- |
@@ -100,7 +100,7 @@ All targets are **proposals** to be fixed in the M0 RFCs before data is collecte
 | **GPLv3** | Yes | Neo4j Community | Strong copyleft; compatible with an enterprise upsell, which the field shows leads to feature gating |
 | **BSL 1.1, SSPL, similar** | **No** (source-available) | Memgraph, ArangoDB, FalkorDB | Protects against hosted competition. The field shows it costs community trust |
 
-**Candidate recommendation (needs qualified legal advice, which plan §29 already requires):**
+**Recommendation (item 1 was adopted on 2026-11-15; items 2 to 5 remain proposals; legal advice is still recommended and not yet obtained):**
 
 1. **Apache-2.0** for all code, because the plan's strategy is adoption and trust, and the field's biggest trust injuries came from restriction and reversal.
 2. **A written commitment** in the repository: the license will not be changed to a source-available license; backup, restore, integrity checking, and high availability are never gated behind a paid tier.

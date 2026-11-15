@@ -42,6 +42,7 @@ Developers use ManjoDB from a terminal (`manjo` CLI and shell), from TypeScript 
 - Pre-implementation. The whole product is a proposed architecture (`ManjoDB-Grand-Plan.md`, revision 4.1).
 - Repository tooling: an **Nx monorepo** (confirmed 2026-11-15), over Cargo and pnpm workspaces. See `research/monorepo-structure.md`.
 - Everything is planned as **open source**. No closed-source or commercial code is planned (confirmed 2026-10-03).
+- License: **Apache-2.0** for all code (decided 2026-11-15). `LICENSE` and `NOTICE` are in the repository root; the copyright line is "The ManjoDB authors".
 - No benchmarks, customers, adoption numbers, or performance claims exist. Never fabricate them.
 
 ## Brand Commitments
