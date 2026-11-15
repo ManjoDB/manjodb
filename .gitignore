@@ -1,0 +1,10 @@
+# Local tooling and design-review scratch (keep the DESIGN.md sidecar)
+.claude/
+.impeccable/*
+!.impeccable/design.json
+
+# Dependencies, logs, OS files
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
