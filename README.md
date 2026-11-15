@@ -22,7 +22,7 @@ None of these is a measured result. The plan states each one as a hypothesis, wi
 
 | Path | What it is |
 | --- | --- |
-| [`ManjoDB-Grand-Plan.md`](ManjoDB-Grand-Plan.md) | The architecture plan (revision 4.4) |
+| [`ManjoDB-Grand-Plan.md`](ManjoDB-Grand-Plan.md) | The architecture plan (revision 4.5) |
 | [`research/`](research/) | Research notes: MQL syntax, repository structure, the competitive landscape, the scaling path, and adoption strategy |
 | [`brand/`](brand/) | The Commit Lanes logo files and brand sheet |
 | [`PRODUCT.md`](PRODUCT.md), [`DESIGN.md`](DESIGN.md) | Product context and the design system for the brand |
@@ -37,6 +37,8 @@ Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
 The license does not grant any right to use the names ManjoDB, Manjo, or MQL, or the logo, as trademarks (Apache-2.0 §6). A trademark policy is planned.
 
-## Contributing
+## Community
 
-Contribution guidelines are not written yet. Until they are, please open an issue before sending a pull request.
+- [CONTRIBUTING.md](CONTRIBUTING.md): what helps most at the design stage, and how to propose a change.
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md): the Contributor Covenant 2.1.
+- [SECURITY.md](SECURITY.md): how to report a vulnerability privately. Please do not open a public issue for one.
