@@ -1,0 +1,481 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-04T12:25:59+00:00",
+  "title": "Design System: ManjoDB",
+  "extensions": {
+    "colorMeta": {
+      "lane-pink": {
+        "role": "primary",
+        "displayName": "Lane Pink",
+        "canonical": "#FF4FA0",
+        "tonalRamp": [
+          "#1D000C",
+          "#490026",
+          "#7A0044",
+          "#B00064",
+          "#DF2D86",
+          "#FF67A8",
+          "#FFAECB",
+          "#FFE7EF"
+        ]
+      },
+      "lane-pink-bright": {
+        "role": "primary",
+        "displayName": "Lane Pink, Bright",
+        "canonical": "#FF74B4",
+        "tonalRamp": [
+          "#1D000D",
+          "#490029",
+          "#7A0048",
+          "#A81F69",
+          "#CF488A",
+          "#F86DAE",
+          "#FFADCE",
+          "#FFE7F0"
+        ]
+      },
+      "lane-pink-ink": {
+        "role": "primary",
+        "displayName": "Lane Pink, Deep",
+        "canonical": "#D81B73",
+        "tonalRamp": [
+          "#1D000A",
+          "#4A0022",
+          "#7C003E",
+          "#B1005B",
+          "#E22A7B",
+          "#FF699F",
+          "#FFAEC6",
+          "#FFE7ED"
+        ]
+      },
+      "lane-lilac": {
+        "role": "secondary",
+        "displayName": "Lane Lilac",
+        "canonical": "#B98CFF",
+        "tonalRamp": [
+          "#120027",
+          "#32005D",
+          "#521E8A",
+          "#7243AF",
+          "#9366D5",
+          "#B689FC",
+          "#D3BBFF",
+          "#F1EBFF"
+        ]
+      },
+      "lane-violet-ink": {
+        "role": "secondary",
+        "displayName": "Lane Violet, Deep",
+        "canonical": "#6E3AD9",
+        "tonalRamp": [
+          "#0E002B",
+          "#2B0065",
+          "#4C00A6",
+          "#6934D3",
+          "#895CFB",
+          "#A791FF",
+          "#C9BFFF",
+          "#EEECFF"
+        ]
+      },
+      "plum": {
+        "role": "neutral",
+        "displayName": "Plum",
+        "canonical": "#2B0D3F",
+        "tonalRamp": [
+          "#140023",
+          "#321446",
+          "#503367",
+          "#705289",
+          "#9273AD",
+          "#B595D2",
+          "#DAB9F8",
+          "#F4E9FF"
+        ]
+      },
+      "plum-deep": {
+        "role": "neutral",
+        "displayName": "Plum, Deep",
+        "canonical": "#1E0830",
+        "tonalRamp": [
+          "#130024",
+          "#2E1942",
+          "#4C3662",
+          "#6C5684",
+          "#8D77A7",
+          "#B199CC",
+          "#D5BDF1",
+          "#F3EAFF"
+        ]
+      },
+      "vertex": {
+        "role": "neutral",
+        "displayName": "Vertex White",
+        "canonical": "#F7EEFF",
+        "tonalRamp": [
+          "#0E0813",
+          "#29222E",
+          "#463F4C",
+          "#655E6C",
+          "#877F8E",
+          "#AAA1B1",
+          "#CEC5D6",
+          "#F3EAFB"
+        ]
+      },
+      "on-plum-muted": {
+        "role": "neutral",
+        "displayName": "On-Plum Muted",
+        "canonical": "#CDB8E6",
+        "tonalRamp": [
+          "#120221",
+          "#2D1B3F",
+          "#4B385E",
+          "#6A5780",
+          "#8C78A3",
+          "#AF9BC7",
+          "#D4BFED",
+          "#F3EAFF"
+        ]
+      },
+      "plum-line": {
+        "role": "neutral",
+        "displayName": "Plum Line",
+        "canonical": "rgba(247, 238, 255, .09)"
+      },
+      "plum-hairline": {
+        "role": "neutral",
+        "displayName": "Plum Hairline",
+        "canonical": "rgba(247, 238, 255, .16)"
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#FBF7FF",
+        "tonalRamp": [
+          "#0C0A0F",
+          "#272429",
+          "#444047",
+          "#636066",
+          "#848188",
+          "#A7A3AB",
+          "#CBC7CF",
+          "#F0EDF4"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#FFFFFF"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#1C0E2A",
+        "tonalRamp": [
+          "#11041E",
+          "#2B1D3B",
+          "#493A5A",
+          "#69597B",
+          "#8A7A9E",
+          "#AD9DC2",
+          "#D1C1E7",
+          "#F3EAFF"
+        ]
+      },
+      "on-paper-muted": {
+        "role": "neutral",
+        "displayName": "On-Paper Muted",
+        "canonical": "#5E4A70",
+        "tonalRamp": [
+          "#130220",
+          "#2E1B3D",
+          "#4C385D",
+          "#6C577E",
+          "#8D78A1",
+          "#B09AC5",
+          "#D5BEEB",
+          "#F4E9FF"
+        ]
+      },
+      "paper-line": {
+        "role": "neutral",
+        "displayName": "Paper Line",
+        "canonical": "rgba(28, 14, 42, .10)"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "One section headline per band: a short declarative sentence, balanced, held to 16ch."
+      },
+      "title": {
+        "displayName": "Lede",
+        "purpose": "The lede under each headline, in the muted text color of the ground."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text, held to 62ch; 16px below 560px."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Notes, captions, nav links, table text, card copy."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Pill actions and the skip link."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "MQL listings, terminal output, file paths, legend terms. Ligatures off, tabular figures for inline code and numbers."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "File-name captions and mock window titles; table headers step up to weight 500."
+      }
+    },
+    "shadows": [
+      {
+        "name": "paper-lift",
+        "value": "0 1px 2px rgba(28, 14, 42, .06), 0 12px 32px -12px rgba(28, 14, 42, .18)",
+        "purpose": "White figures and lockup tiles on paper. Never on plum."
+      },
+      {
+        "name": "paper-rest",
+        "value": "0 1px 2px rgba(28, 14, 42, .06)",
+        "purpose": "White cards that sit flatter on paper, such as the misuse cards."
+      }
+    ],
+    "motion": [
+      {
+        "name": "print",
+        "value": "print 1.25s steps(14, end) .15s both; clip-path inset(0 0 100% 0) to inset(0 0 0 0)",
+        "purpose": "The one authored motion: the mark's lanes reveal top to bottom like lines of git log --graph. Only under prefers-reduced-motion: no-preference."
+      },
+      {
+        "name": "commit",
+        "value": "commit .5s cubic-bezier(.16, 1, .3, 1) both; scale(.2) and opacity 0 to scale(1) and opacity 1; delays .45s branch, .7s merge, .95s commit",
+        "purpose": "Vertex rings arrive after the print passes. Same reduced-motion guard."
+      },
+      {
+        "name": "state",
+        "value": ".2s ease on background-color, color, border-color",
+        "purpose": "Every hover and active state change. Nothing else is animated."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack",
+        "value": "960px",
+        "purpose": "Splits collapse to one column; the large mark moves above the copy and its rails are cut to frame; lockup tiles and don't cards go two-up."
+      },
+      {
+        "name": "phone",
+        "value": "560px",
+        "purpose": "Body drops to 16px; don't cards go single-column; swatches go from four to two columns."
+      }
+    ],
+    "laneGrid": {
+      "columns": 12,
+      "wrap": "1240px",
+      "gutter": "clamp(16px, 4vw, 56px)",
+      "lane": "calc(min(1240px, 100cqw) / 12)",
+      "line": "1px; plum-line on plum, paper-line on paper",
+      "registration": "Line 0 is the wrap's left edge and line 12 its right edge; lines continue at the same pitch to the band edges. Layout grids use the 12 lanes with no column gap."
+    },
+    "mark": {
+      "source": "brand/build_logo.py generates every file in brand/logo/; never edit the SVGs by hand",
+      "grid": "56 x 64 units",
+      "lanesX": [
+        10,
+        28,
+        46
+      ],
+      "railsY": [
+        7,
+        57
+      ],
+      "vertices": {
+        "branch": [
+          10,
+          18
+        ],
+        "commit": [
+          28,
+          45
+        ],
+        "merge": [
+          46,
+          18
+        ]
+      },
+      "branchPath": "M10 18C10 31 28 31 28 45C28 31 46 31 46 18",
+      "stroke": 5.5,
+      "caps": "round",
+      "ring": {
+        "r": 4.1,
+        "stroke": 2.8
+      },
+      "knockout": 5.1,
+      "favicon": {
+        "stroke": 7.5,
+        "vertex": "solid, r 4.6",
+        "knockout": 5.9,
+        "tile": "64 plum square, rx 14, mark at 0.8 scale"
+      },
+      "appIcon": {
+        "tile": "512 plum square, rx 112",
+        "mark": "reverse at 6x, offset (88, 64)"
+      },
+      "clearSpace": "one lane, 18 units, on every side",
+      "minimum": {
+        "mark": "24px tall",
+        "lockup": "136px wide",
+        "below24px": "use favicon.svg"
+      },
+      "lockup": "mark at 1.6x, offset y 8.8, rails from ascender 20 to baseline 100; wordmark at x 122",
+      "wordmark": "lowercase manjodb, monoline stroke 9, round caps and joins; x-height 50 to 100, ascender 20, descender 125; bowls r 25, m arches r 16, n arch r 20; the j dot is a commit ring, r 6, stroke 5.5",
+      "variants": {
+        "light": "ink vertices, #D81B73 branch, #6E3AD9 rails",
+        "reverse": "#F7EEFF vertices, #FF4FA0 branch, #B98CFF rails",
+        "mono": "currentColor throughout; inline the SVG so the color inherits"
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one pink pill per view; Lane Pink is also the active state.",
+      "html": "<div class=\"ds-plum\"><a class=\"ds-btn-primary\" href=\"#\">Download the logo files</a></div>",
+      "css": ".ds-plum { background: var(--plum, #2B0D3F); padding: 32px; } .ds-btn-primary { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; font: 500 16px/1 \"Lexend\", ui-sans-serif, system-ui, sans-serif; text-decoration: none; transition: background-color .2s ease, color .2s ease, border-color .2s ease; background: var(--lane-pink, #FF4FA0); color: var(--plum-deep, #1E0830); } .ds-btn-primary:hover { background: #FF74B4; } .ds-btn-primary:focus-visible { outline: 2px solid var(--lane-pink, #FF4FA0); outline-offset: 3px; }"
+    },
+    {
+      "name": "Quiet Button",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Secondary action on plum: an outlined pill, no fill.",
+      "html": "<div class=\"ds-plum\"><a class=\"ds-btn-quiet\" href=\"#\">How the mark is built</a></div>",
+      "css": ".ds-plum { background: var(--plum, #2B0D3F); padding: 32px; } .ds-btn-quiet { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; font: 500 16px/1 \"Lexend\", ui-sans-serif, system-ui, sans-serif; text-decoration: none; transition: background-color .2s ease, color .2s ease, border-color .2s ease; color: var(--vertex, #F7EEFF); border: 1px solid rgba(247, 238, 255, .35); } .ds-btn-quiet:hover { border-color: var(--vertex, #F7EEFF); } .ds-btn-quiet:focus-visible { outline: 2px solid var(--lane-pink, #FF4FA0); outline-offset: 3px; }"
+    },
+    {
+      "name": "Top Navigation",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Reverse lockup at 30px on plum, section links in muted Body Small.",
+      "html": "<header class=\"ds-top\"><svg class=\"ds-lockup\" viewBox=\"-2 12 572 120\" role=\"img\" aria-label=\"ManjoDB\"><g transform=\"translate(0 8.8) scale(1.6)\"><mask id=\"ds-nav-k\" maskUnits=\"userSpaceOnUse\" x=\"-4\" y=\"-4\" width=\"64\" height=\"72\"><rect x=\"-4\" y=\"-4\" width=\"64\" height=\"72\" fill=\"#fff\"/><g fill=\"#000\"><circle cx=\"10\" cy=\"18\" r=\"5.1\"/><circle cx=\"28\" cy=\"45\" r=\"5.1\"/><circle cx=\"46\" cy=\"18\" r=\"5.1\"/></g></mask><g fill=\"none\" stroke-linecap=\"round\" stroke-width=\"5.5\" mask=\"url(#ds-nav-k)\"><path d=\"M10 7V57M46 7V57\" stroke=\"#B98CFF\"/><path d=\"M10 18C10 31 28 31 28 45C28 31 46 31 46 18\" stroke=\"#FF4FA0\"/></g><g fill=\"none\" stroke=\"#F7EEFF\" stroke-width=\"2.8\"><circle cx=\"10\" cy=\"18\" r=\"4.1\"/><circle cx=\"28\" cy=\"45\" r=\"4.1\"/><circle cx=\"46\" cy=\"18\" r=\"4.1\"/></g></g><g transform=\"translate(122 0)\"><path d=\"M5 50V100M5 66A16 16 0 0 1 37 66V100M37 66A16 16 0 0 1 69 66V100M141 75A25 25 0 1 1 91 75A25 25 0 1 1 141 75M141 50V100M163 50V100M163 70A20 20 0 0 1 203 70V100M225 50V112A13 13 0 0 1 212 125M297 75A25 25 0 1 1 247 75A25 25 0 1 1 297 75M369 75A25 25 0 1 1 319 75A25 25 0 1 1 369 75M369 20V100M391 20V100M441 75A25 25 0 1 1 391 75A25 25 0 1 1 441 75\" fill=\"none\" stroke=\"#F7EEFF\" stroke-width=\"9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"225\" cy=\"29\" r=\"6\" fill=\"none\" stroke=\"#F7EEFF\" stroke-width=\"5.5\"/></g></svg><nav class=\"ds-nav\" aria-label=\"Sections\"><a href=\"#\">Mark</a><a href=\"#\">Diagrams</a><a href=\"#\">Color</a><a href=\"#\">Lockups</a><a href=\"#\">Files</a></nav></header>",
+      "css": ".ds-top { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 32px; background: var(--plum, #2B0D3F); font-family: \"Lexend\", ui-sans-serif, system-ui, sans-serif; } .ds-lockup { display: block; height: 30px; width: auto; } .ds-nav { display: flex; flex-wrap: wrap; gap: clamp(14px, 2.4vw, 32px); font-size: 15px; } .ds-nav a { color: var(--on-plum-muted, #CDB8E6); text-decoration: none; padding: 6px 0; } .ds-nav a:hover { color: var(--vertex, #F7EEFF); } .ds-nav a:focus-visible { outline: 2px solid var(--lane-pink, #FF4FA0); outline-offset: 3px; border-radius: 2px; }"
+    },
+    {
+      "name": "The Mark, printing in",
+      "kind": "custom",
+      "refersTo": "mark",
+      "description": "Reverse mark on plum with the one authored motion: a stepped top-to-bottom print, then the commit rings.",
+      "html": "<div class=\"ds-plum ds-mark-wrap\"><svg class=\"ds-mark\" viewBox=\"0 0 56 64\" role=\"img\" aria-label=\"ManjoDB\"><mask id=\"ds-print-k\" maskUnits=\"userSpaceOnUse\" x=\"-4\" y=\"-4\" width=\"64\" height=\"72\"><rect x=\"-4\" y=\"-4\" width=\"64\" height=\"72\" fill=\"#fff\"/><g fill=\"#000\"><circle cx=\"10\" cy=\"18\" r=\"5.1\"/><circle cx=\"28\" cy=\"45\" r=\"5.1\"/><circle cx=\"46\" cy=\"18\" r=\"5.1\"/></g></mask><g class=\"ds-print\" fill=\"none\" stroke-linecap=\"round\" stroke-width=\"5.5\" mask=\"url(#ds-print-k)\"><path d=\"M10 7V57M46 7V57\" stroke=\"#B98CFF\"/><path d=\"M10 18C10 31 28 31 28 45C28 31 46 31 46 18\" stroke=\"#FF4FA0\"/></g><g fill=\"none\" stroke=\"#F7EEFF\" stroke-width=\"2.8\"><circle class=\"ds-commit ds-c1\" cx=\"10\" cy=\"18\" r=\"4.1\"/><circle class=\"ds-commit ds-c2\" cx=\"28\" cy=\"45\" r=\"4.1\"/><circle class=\"ds-commit ds-c3\" cx=\"46\" cy=\"18\" r=\"4.1\"/></g></svg></div>",
+      "css": ".ds-plum { background: var(--plum, #2B0D3F); padding: 32px; } .ds-mark-wrap { display: grid; place-items: center; } .ds-mark { display: block; height: 160px; width: auto; } @media (prefers-reduced-motion: no-preference) { .ds-print { animation: ds-print 1.25s steps(14, end) .15s both; } .ds-commit { transform-box: fill-box; transform-origin: center; animation: ds-commit .5s cubic-bezier(.16, 1, .3, 1) both; } .ds-c1 { animation-delay: .45s; } .ds-c2 { animation-delay: .95s; } .ds-c3 { animation-delay: .7s; } @keyframes ds-print { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } } @keyframes ds-commit { from { transform: scale(.2); opacity: 0; } to { transform: scale(1); opacity: 1; } } }"
+    },
+    {
+      "name": "Figure on Paper",
+      "kind": "card",
+      "refersTo": "figure-on-paper",
+      "description": "White panel lifted on paper, holding the light mark on its construction grid.",
+      "html": "<div class=\"ds-paper\"><figure class=\"ds-figure\"><svg viewBox=\"-16 -6 92 78\" role=\"img\" aria-label=\"Mark construction\"><g stroke=\"rgba(28,14,42,.12)\" stroke-width=\".3\"><path d=\"M10 -6V72M28 -6V72M46 -6V72\"/><path d=\"M-16 18H76M-16 45H76M-16 7H76M-16 57H76\" stroke-dasharray=\"1 1.2\"/></g><mask id=\"ds-fig-k\" maskUnits=\"userSpaceOnUse\" x=\"-4\" y=\"-4\" width=\"64\" height=\"72\"><rect x=\"-4\" y=\"-4\" width=\"64\" height=\"72\" fill=\"#fff\"/><g fill=\"#000\"><circle cx=\"10\" cy=\"18\" r=\"5.1\"/><circle cx=\"28\" cy=\"45\" r=\"5.1\"/><circle cx=\"46\" cy=\"18\" r=\"5.1\"/></g></mask><g fill=\"none\" stroke-linecap=\"round\" stroke-width=\"5.5\" mask=\"url(#ds-fig-k)\"><path d=\"M10 7V57M46 7V57\" stroke=\"#6E3AD9\"/><path d=\"M10 18C10 31 28 31 28 45C28 31 46 31 46 18\" stroke=\"#D81B73\"/></g><g fill=\"none\" stroke=\"#1C0E2A\" stroke-width=\"2.8\"><circle cx=\"10\" cy=\"18\" r=\"4.1\"/><circle cx=\"28\" cy=\"45\" r=\"4.1\"/><circle cx=\"46\" cy=\"18\" r=\"4.1\"/></g></svg><figcaption>Lanes at x = 10, 28, 46; vertices at y = 18 and 45; stroke 5.5.</figcaption></figure></div>",
+      "css": ".ds-paper { background: var(--paper, #FBF7FF); padding: 32px; } .ds-figure { margin: 0; background: #fff; border-radius: 20px; padding: clamp(24px, 4vw, 48px); box-shadow: 0 1px 2px rgba(28, 14, 42, .06), 0 12px 32px -12px rgba(28, 14, 42, .18); } .ds-figure svg { display: block; width: 100%; max-width: 360px; height: auto; margin: 0 auto; } .ds-figure figcaption { margin-top: 16px; font: 400 15px/1.6 \"Lexend\", ui-sans-serif, system-ui, sans-serif; color: var(--on-paper-muted, #5E4A70); }"
+    },
+    {
+      "name": "MQL Code Block",
+      "kind": "custom",
+      "refersTo": "code-block",
+      "description": "Query listing on Plum Deep: keywords muted, relationship names in Lane Pink, nothing else colored.",
+      "html": "<pre class=\"ds-code\"><span class=\"ds-kw\">find</span> dependency: Service\n<span class=\"ds-kw\">where</span> dependency.key = $service_key\n<span class=\"ds-kw\">follow</span> dependency <span class=\"ds-kw\">through</span> <span class=\"ds-e\">link: DEPENDS_ON</span> <span class=\"ds-kw\">from</span> consumer: Service\n<span class=\"ds-kw\">follow</span> consumer <span class=\"ds-kw\">through</span> <span class=\"ds-e\">OWNS</span> <span class=\"ds-kw\">from</span> owner: Team\n<span class=\"ds-kw\">show</span> consumer._id, consumer.name, owner.name, link._id\n<span class=\"ds-kw\">take</span> 50</pre>",
+      "css": ".ds-code { margin: 0; background: var(--plum-deep, #1E0830); color: var(--vertex, #F7EEFF); border-radius: 20px; padding: 28px 32px; font: 400 14px/1.75 \"JetBrains Mono\", ui-monospace, \"Cascadia Code\", monospace; white-space: pre; overflow-x: auto; } .ds-kw { color: var(--on-plum-muted, #CDB8E6); } .ds-e { color: var(--lane-pink, #FF4FA0); }"
+    },
+    {
+      "name": "Lane Diagram",
+      "kind": "custom",
+      "refersTo": "lane-diagram",
+      "description": "A query result drawn in the mark's notation: lilac context rails, the pink answer path, achromatic vertex rings, mono labels.",
+      "html": "<figure class=\"ds-diagram\"><svg viewBox=\"0 0 360 236\" role=\"img\" aria-label=\"checkout and billing depend on identity through edges 81 and 84\"><mask id=\"ds-q-k\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"360\" height=\"236\"><rect width=\"360\" height=\"236\" fill=\"#fff\"/><g fill=\"#000\"><circle cx=\"70\" cy=\"40\" r=\"11\"/><circle cx=\"170\" cy=\"118\" r=\"11\"/><circle cx=\"270\" cy=\"118\" r=\"11\"/><circle cx=\"170\" cy=\"196\" r=\"11\"/><circle cx=\"270\" cy=\"196\" r=\"11\"/></g></mask><g fill=\"none\" stroke-linecap=\"round\" stroke-width=\"7\" mask=\"url(#ds-q-k)\"><path d=\"M70 4V232M170 92V232M270 92V232\" stroke=\"#B98CFF\" stroke-opacity=\".55\"/><path d=\"M70 40C70 80 170 78 170 118M70 40C70 80 270 78 270 118\" stroke=\"#FF4FA0\"/><path d=\"M170 118V196M270 118V196\" stroke=\"#FF4FA0\"/></g><g fill=\"none\" stroke=\"#F7EEFF\" stroke-width=\"5\"><circle cx=\"70\" cy=\"40\" r=\"9\"/><circle cx=\"170\" cy=\"118\" r=\"9\"/><circle cx=\"270\" cy=\"118\" r=\"9\"/><circle cx=\"170\" cy=\"196\" r=\"9\"/><circle cx=\"270\" cy=\"196\" r=\"9\"/></g><g font-family=\"JetBrains Mono, monospace\" font-size=\"12.5\" fill=\"#F7EEFF\"><text x=\"86\" y=\"44\">identity</text><text x=\"186\" y=\"122\">checkout</text><text x=\"286\" y=\"122\">billing</text><text x=\"186\" y=\"200\">Payments</text><text x=\"286\" y=\"200\">Finance</text></g><g font-family=\"JetBrains Mono, monospace\" font-size=\"10.5\" fill=\"#CDB8E6\"><text x=\"112\" y=\"92\">81</text><text x=\"214\" y=\"78\">84</text><text x=\"176\" y=\"162\">OWNS</text><text x=\"276\" y=\"162\">OWNS</text></g></svg><figcaption>Each row as a path, read top to bottom. Synthetic example data.</figcaption></figure>",
+      "css": ".ds-diagram { margin: 0; background: var(--plum-deep, #1E0830); border-radius: 20px; padding: clamp(24px, 4vw, 48px); } .ds-diagram svg { display: block; width: 100%; height: auto; } .ds-diagram figcaption { margin-top: 16px; font: 400 15px/1.6 \"Lexend\", ui-sans-serif, system-ui, sans-serif; color: var(--on-plum-muted, #CDB8E6); }"
+    },
+    {
+      "name": "File Row",
+      "kind": "custom",
+      "refersTo": "file-link",
+      "description": "Asset row on plum: thumbnail on its intended ground, name, mono path, pink Download link.",
+      "html": "<ul class=\"ds-files\"><li><span class=\"ds-thumb\"><svg viewBox=\"0 0 56 64\" aria-hidden=\"true\"><mask id=\"ds-row-k\" maskUnits=\"userSpaceOnUse\" x=\"-4\" y=\"-4\" width=\"64\" height=\"72\"><rect x=\"-4\" y=\"-4\" width=\"64\" height=\"72\" fill=\"#fff\"/><g fill=\"#000\"><circle cx=\"10\" cy=\"18\" r=\"5.1\"/><circle cx=\"28\" cy=\"45\" r=\"5.1\"/><circle cx=\"46\" cy=\"18\" r=\"5.1\"/></g></mask><g fill=\"none\" stroke-linecap=\"round\" stroke-width=\"5.5\" mask=\"url(#ds-row-k)\"><path d=\"M10 7V57M46 7V57\" stroke=\"#6E3AD9\"/><path d=\"M10 18C10 31 28 31 28 45C28 31 46 31 46 18\" stroke=\"#D81B73\"/></g><g fill=\"none\" stroke=\"#1C0E2A\" stroke-width=\"2.8\"><circle cx=\"10\" cy=\"18\" r=\"4.1\"/><circle cx=\"28\" cy=\"45\" r=\"4.1\"/><circle cx=\"46\" cy=\"18\" r=\"4.1\"/></g></svg></span><b>Mark, light</b><code>logo/manjodb-mark.svg</code><a href=\"#\">Download</a></li></ul>",
+      "css": ".ds-files { list-style: none; margin: 0; padding: 0 32px; background: var(--plum, #2B0D3F); color: var(--vertex, #F7EEFF); font: 400 17px/1.6 \"Lexend\", ui-sans-serif, system-ui, sans-serif; } .ds-files li { display: grid; grid-template-columns: 104px minmax(0, 1fr) minmax(0, 1.4fr) auto; gap: 16px; align-items: center; padding: 14px 0; border-top: 1px solid rgba(247, 238, 255, .16); border-bottom: 1px solid rgba(247, 238, 255, .16); } .ds-thumb { width: 88px; height: 52px; border-radius: 10px; display: grid; place-items: center; background: #fff; box-shadow: inset 0 0 0 1px rgba(247, 238, 255, .16); } .ds-thumb svg { height: 40px; width: auto; } .ds-files b { font-weight: 500; } .ds-files code { font: 400 14px/1.6 \"JetBrains Mono\", ui-monospace, \"Cascadia Code\", monospace; color: var(--on-plum-muted, #CDB8E6); } .ds-files a { color: var(--lane-pink, #FF4FA0); font-weight: 500; text-decoration: none; padding: 8px 0; } .ds-files a:hover { text-decoration: underline; } .ds-files a:focus-visible { outline: 2px solid var(--lane-pink, #FF4FA0); outline-offset: 3px; border-radius: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Commit Lanes",
+    "overview": "ManjoDB is drawn in the graph notation developers already read every day: the lanes of `git log --graph`. Two rails, one branch, a commit and a merge make an M, and the same notation draws every diagram the product will ever show. The system refuses the category default, a node-network hexagon in a purple gradient. It reads as precise and engineering-serious: a small number of materials, used with discipline.\n\nThe world is built from full-width bands of ground, deep plum or lilac-tinted paper, each carrying a faint vertical lane grid registered to the content wrap. On those grounds everything is achromatic except the edges. Lanes and relationships carry the only color (pink for the relationship, lilac or violet for structure); vertices, headlines, body copy and grounds stay plum, ink, vertex white or paper. Every stroke is monoline with round caps, from the mark to the wordmark to the diagram lanes.\n\nDensity is calm and editorial: generous band padding, short headlines held to 16 characters a line, ledes held to 62 characters, and mono type reserved for anything a machine reads. There is one authored motion: the mark prints itself row by row, the way a graph log scrolls into a terminal, and then holds still.",
+    "keyCharacteristics": [
+      "Color lives only on edges, plus one pink active state; vertices and type stay achromatic.",
+      "Full-width plum and paper bands; a band never changes ground partway through.",
+      "A 12-column lane grid, registered to the 1240px wrap, on every band.",
+      "Lexend for people, JetBrains Mono for machines.",
+      "A drawn monoline wordmark, never typeset.",
+      "One motion: the print-in."
+    ],
+    "rules": [
+      {
+        "name": "The Edges Only Rule",
+        "body": "Color marks an edge and nothing else: a lane, a relationship path, a relationship name in query text, a graph edge in terminal output. Vertices, headlines, body text and grounds are always achromatic. The one sanctioned extension is the active state: Lane Pink fills the primary action and draws focus, selection and download links, because an action is the path you take next.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Inks Rule",
+        "body": "Every lane color comes as a pair: bright on plum (Lane Pink, Lane Lilac), deep on paper and white (Lane Pink Deep, Lane Violet Deep), so every edge holds at least 4.5:1 against its ground. Never put the bright pair on paper or the deep pair on plum.",
+        "section": "colors"
+      },
+      {
+        "name": "The Never Alone Rule",
+        "body": "Color never carries meaning by itself. Every colored edge in a diagram is also named or numbered (edge IDs 81 and 84, the label `OWNS`), and every legend key pairs its swatch with a word.",
+        "section": "colors"
+      },
+      {
+        "name": "The Drawn Name Rule",
+        "body": "The name is never typeset. Wherever \"manjodb\" appears as a brand (top bar, hero, footer, docs header) it is a wordmark or lockup file; the page's h1 is the wordmark image with alt text \"ManjoDB\". In running prose, the product is written \"ManjoDB\".",
+        "section": "typography"
+      },
+      {
+        "name": "The Mono Means Machine Rule",
+        "body": "JetBrains Mono is for what a machine reads or writes: queries, commands, paths, IDs, table cells, diagram vertex and edge labels. Everything a person reads is Lexend.",
+        "section": "typography"
+      },
+      {
+        "name": "The Registered Lanes Rule",
+        "body": "Nothing floats off the grid. Every band shows the lane grid, the content wrap spans lines 0 to 12, and splits, file rows and the large mark's rails start on lane lines; card grids fill the wrap with a 16px gap.",
+        "section": "layout"
+      },
+      {
+        "name": "The Plum Is Flat Rule",
+        "body": "No shadow ever falls on plum. Depth there is a darker plum, not a shadow.",
+        "section": "elevation-depth"
+      }
+    ],
+    "dos": [
+      "Do reserve color for edges: lanes, relationship paths, relationship names in queries, and the single pink active state.",
+      "Do switch lane inks with the ground: #FF4FA0 and #B98CFF on plum, #D81B73 and #6E3AD9 on white or paper.",
+      "Do keep vertices open rings in Ink or Vertex White, knocking a gap out of the lanes beneath them; only the favicon uses solid vertices.",
+      "Do register every layout to the 12-lane grid on the 1240px wrap, and show the grid on every band.",
+      "Do use the generated files from `brand/build_logo.py`, and change geometry only in that script.",
+      "Do give the mark one lane (18 units) of clear space, keep it at 24px tall or larger, and switch to the favicon below 24px.",
+      "Do draw every diagram from a real query and its result, labeled as synthetic when the data is.",
+      "Do name or number every colored edge so meaning never depends on color alone."
+    ],
+    "donts": [
+      "Don't color a vertex. Color belongs to edges only.",
+      "Don't add a gradient. Lanes are flat, one color each.",
+      "Don't rotate the mark. Lanes run vertically; history reads top to bottom.",
+      "Don't retype the wordmark in a font. Use the drawn files.",
+      "Don't put a shadow on plum; recess with Plum Deep instead.",
+      "Don't add a second authored motion, or play the print-in for visitors who prefer reduced motion.",
+      "Don't set headlines, body text or a band ground in a lane color.",
+      "Don't reach for a node-network hexagon or a purple gradient; that is the category default this identity refuses."
+    ]
+  }
+}
