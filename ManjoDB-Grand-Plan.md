@@ -4,7 +4,7 @@
 >
 > The architectural source of truth for ManjoDB: a single-node, graph-native database for applications that must answer *what is connected to what, and why*. This plan covers the product thesis, graph model, schema system, MQL, execution, storage, transactions, server protocol, SDKs, CLI, AI-native tooling, operations, testing, roadmap, and the research tracks that are deliberately *not* on the critical path.
 
-**Revision:** 4.2 — 2026-11-15. Revision 4.2 adds competitive, scaling, and adoption research, and four small architecture proposals (listed below). Revision 4.1 (2026-10-03) made three language changes:
+**Revision:** 4.3 — 2026-11-15. Revision 4.3 adopts Nx as the monorepo tool (§5.4). Revision 4.2 (the same day) added competitive, scaling, and adoption research, and four small architecture proposals (listed below). Revision 4.1 (2026-10-03) made three language changes:
 
 - MQL bindings are now declared name-first (`find dependency: Service`), and `as` only renames output columns.
 - Default output keys are now `<binding>_<property>`.
@@ -24,6 +24,11 @@ Revision 4.2 adds:
 - a staged scale-out path, and why single-node is a stage rather than a ceiling ([`research/scaling-path.md`](research/scaling-path.md), §28);
 - the adoption strategy and a license candidate ([`research/developer-adoption-strategy.md`](research/developer-adoption-strategy.md), §29);
 - proposals to keep scale-out open: a logical commit log (§10.2), `commit_seq` in results (§8.8), reserved partition bits in IDs (§6.2), and a distributed-substrate feasibility experiment (§10.6).
+
+Revision 4.3 adds:
+
+- **Nx as the monorepo tool** (confirmed 2026-11-15), replacing the earlier `justfile` plan. Nx enforces the seam rules with project tags, runs only affected projects in CI, and releases npm packages; Cargo stays the source of truth for Rust. The design, trade-offs, and open questions are in [`research/monorepo-structure.md`](research/monorepo-structure.md) §3.3–3.4;
+- the main risks it records: Rust support comes from a community plugin, Rust crate releases through Nx are unverified, and Nx's per-target build directories may slow CI. Two M0 spikes (§25.2) measure them.
 
 **Document status:** proposed architecture. **Implementation status:** nothing described here is implemented, released, benchmarked, or user-tested. Every command, package name, port, endpoint, configuration key, and MQL example is a proposed interface. Package names, domains, registry namespaces, and container repositories must be checked and secured before use.
 
@@ -295,6 +300,7 @@ There is **no privileged importer, no admin backdoor, and no AI-specific path**.
 ### 5.4 Repository layout (proposed)
 
 ```text
+nx.json                Nx workspace configuration (tags, targets, caching, release), over pnpm and Cargo workspaces
 crates/manjo-core      IDs, values, encodings shared by all crates
 crates/manjo-mql       lexer, parser, binder, IR, diagnostics, signatures
 crates/manjo-ref       in-memory reference evaluator (test oracle)
@@ -316,11 +322,12 @@ research/              research notes
 brand/                 logo files, brand sheet, generator (build_logo.py)
 ```
 
-The repository is one monorepo until a seam earns its own repo. A **seam** is a directory boundary planned in advance as a possible future repository: the engine (`crates/`), the TypeScript surface, `spec/`, `skills/`, and `docs/`. The seam rules, tooling, split triggers, and extraction playbook are in [`research/monorepo-structure.md`](research/monorepo-structure.md). In summary:
+The repository is one **Nx monorepo** (confirmed 2026-11-15) until a seam earns its own repo. A **seam** is a directory boundary planned in advance as a possible future repository: the engine (`crates/`), the TypeScript surface, `spec/`, `skills/`, and `docs/`. The seam rules, tooling, split triggers, and extraction playbook are in [`research/monorepo-structure.md`](research/monorepo-structure.md). In summary:
 
 - no cross-seam source imports;
 - cross-seam dependencies only through built artifacts;
-- per-seam tags, changelogs, CODEOWNERS, and path-filtered CI;
+- Nx project tags enforced as module boundaries, per-seam changelogs, CODEOWNERS, and `nx affected` CI;
+- Cargo stays the source of truth for Rust, and Nx orchestrates it through the community `@monodon/rust` plugin or plain run-commands targets;
 - the engine crates never split;
 - non-TypeScript SDKs start in their own repos and consume `spec/` conformance by version.
 
@@ -2130,7 +2137,7 @@ flowchart LR
 
 | Milestone | Question it answers | Builds | Deliberately does **not** build | Exit evidence |
 | --- | --- | --- | --- | --- |
-| **M0 — Spec cleanup** | Can the semantics be stated unambiguously? | RFC-0001 (model, IDs, values), RFC-0002 (MQL v0.1 grammar and semantics), RFC-0003 (schema document and catalog), RFC-0004 (transactions, receipts, fault model), RFC-0005 (protocol v1). Fixtures and corpus skeleton. | Any engine code beyond spikes | RFCs reviewed. Corpus expected outputs computed by hand for the Appendix A3 fixture. |
+| **M0 — Spec cleanup** | Can the semantics be stated unambiguously? | RFC-0001 (model, IDs, values), RFC-0002 (MQL v0.1 grammar and semantics), RFC-0003 (schema document and catalog), RFC-0004 (transactions, receipts, fault model), RFC-0005 (protocol v1). Fixtures and corpus skeleton. **Repository scaffold** as RFC-0000: the Nx workspace, seam tags and boundary checks, `nx affected` CI, and two tooling spikes (releasing a crate with `nx release` versus release-plz; Nx versus plain Cargo CI time). | Any engine code beyond spikes | RFCs reviewed. Corpus expected outputs computed by hand for the Appendix A3 fixture. The Nx workspace builds placeholder crates and packages, and its boundary checks fail on a deliberately forbidden import. |
 | **M1 — Language prototype** | Does MQL express the workloads, and can people and models learn it? | `manjo-mql` (lexer, parser, binder, diagnostics, signatures), `manjo-ref` (in-memory evaluator), JSONL fixture loader, `manjo run --fixture`, `manjo validate`. Formative usability pilot. First LLM authoring evaluation. | Persistence, server, SDKs, indexes, performance work | All corpus queries pass on `manjo-ref`. Pilot results against the §26 criteria. LLM evaluation report. |
 | **M2 — Workload and product proof** | Is there a product, compared with PostgreSQL and with "no database at all"? | D1 and D2 datasets at small and medium scale; MQL and path implementations on `manjo-ref`; tuned PostgreSQL baselines; the "MQL → recursive SQL compiler" spike (§1.5); interviews and pilots with 3–5 teams that own such data | Production storage | **G-PRODUCT** decision memo (§26) |
 | **M3 — Storage experiments** | Which substrate and adjacency layout, at what cost? | S1–S4 (§10.6) on prototype graph layers; crash and power-loss harness | Server, SDK | **G-STORAGE** report; RFC-0001 key layout frozen for v0.1 |
@@ -2240,6 +2247,7 @@ The plan assumes a very small team. "Specialist" in the table means the work nee
 | MCP adapter + skills | Low–medium, high churn | No | Thin adapter over the protocol | Tracking MCP specification revisions |
 | Studio | High, ongoing | UI | Deferred to v0.2+; IDE-first | Browser support, accessibility |
 | Docs + website | Medium, ongoing | No | Docs-as-tests from the corpus | Versioned docs |
+| Repository tooling (Nx) | Low–medium, ongoing | No | One workspace over Cargo and pnpm; Cargo stays the source of truth | Nx major upgrades; upkeep of a community Rust plugin |
 | Cloud, replication, distributed | Very high | Yes | **Research only** | — |
 
 **Rules:**
@@ -2293,7 +2301,7 @@ The detailed track table follows.
 - **Licensing:** **undecided, with a candidate.** It must be decided, with qualified legal advice, before outside contributions are accepted, together with the contribution terms. A source-available license must not be called open source. **Candidate** ([`research/developer-adoption-strategy.md`](research/developer-adoption-strategy.md) §6): Apache-2.0 for all code; a written commitment never to relicense to a source-available license and never to gate backup, restore, integrity checking, or high availability; a DCO rather than a CLA, so contributors keep their copyright; a trademark policy that protects the names and mark while permitting forks under other names; and a neutral foundation as a later goal. The field's trust failures (Redis, ArangoDB, Memgraph, FalkorDB) are why this decision is made early.
 - **Sustainability:** an explicit workstream with a decision at the product gate (§26). No revenue model may require gating correctness or recovery features. Options and evidence: the adoption note §7.
 - **Governance documents:** CONTRIBUTING, CODE_OF_CONDUCT, SECURITY (private reporting), the RFC process, supported-version policy, release checklist, and an owner per subsystem.
-- **RFCs:** M0 starts with RFC-0001 to RFC-0005 (§25.2). Further RFCs:
+- **RFCs:** M0 starts with RFC-0000 (repository layout) and RFC-0001 to RFC-0005 (§25.2). Further RFCs:
   - RFC-0006 backup format;
   - RFC-0007 error registry;
   - RFC-0008 MCP adapter contract;

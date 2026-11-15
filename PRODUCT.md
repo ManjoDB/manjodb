@@ -40,6 +40,7 @@ Developers use ManjoDB from a terminal (`manjo` CLI and shell), from TypeScript 
 ## Capabilities and Constraints
 
 - Pre-implementation. The whole product is a proposed architecture (`ManjoDB-Grand-Plan.md`, revision 4.1).
+- Repository tooling: an **Nx monorepo** (confirmed 2026-11-15), over Cargo and pnpm workspaces. See `research/monorepo-structure.md`.
 - Everything is planned as **open source**. No closed-source or commercial code is planned (confirmed 2026-10-03).
 - No benchmarks, customers, adoption numbers, or performance claims exist. Never fabricate them.
 
