@@ -56,16 +56,18 @@ write("manjodb-mark-mono.svg", svg("0 0 56 64", mark(mono, "m")))
 write("manjodb-wordmark.svg", svg("-4 12 454 120", word(INK)))
 write("manjodb-wordmark-reverse.svg", svg("-4 12 454 120", word(PAPER)))
 # Lockup: rails run ascender (20) to baseline (100), like the d and b stems.
+# Optical alignment (measured): the M's mass sat 12 units above the wordmark's, so it is shifted down 12 units.
+# The frame has equal 4-unit padding around the content. Favicon nudged up 0.7 unit (its mass measured 0.9% low).
 def lockup(c, uid):
-    return (f'<g transform="translate(0 8.8) scale(1.6)">{mark(c, uid)}</g>'
+    return (f'<g transform="translate(0 20.8) scale(1.6)">{mark(c, uid)}</g>'
             f'<g transform="translate(122 0)">{word(c["word"])}</g>')
-write("manjodb-lockup.svg", svg("-2 12 572 120", lockup(LIGHT, "l")))
-write("manjodb-lockup-reverse.svg", svg("-2 12 572 120", lockup(DARK, "d")))
+write("manjodb-lockup.svg", svg("3.2 11.5 568.3 121.9", lockup(LIGHT, "l")))
+write("manjodb-lockup-reverse.svg", svg("3.2 11.5 568.3 121.9", lockup(DARK, "d")))
 # App icon and favicon: plum tile. Favicon uses solid vertices and heavier lanes.
 write("manjodb-app-icon.svg", svg("0 0 512 512",
-      f'<rect width="512" height="512" rx="112" fill="{PLUM}"/>'
+      f'<rect width="512" height="512" fill="{PLUM}"/>'
       f'<g transform="translate(88 64) scale(6)">{mark(DARK, "a")}</g>'))
 write("favicon.svg", svg("0 0 64 64",
       f'<rect width="64" height="64" rx="14" fill="{PLUM}"/>'
-      f'<g transform="translate(9.6 6.4) scale(0.8)">{mark(DARK, "f", stroke=7.5, ring=False)}</g>'))
+      f'<g transform="translate(9.6 5.83) scale(0.8)">{mark(DARK, "f", stroke=7.5, ring=False)}</g>'))
 print("\n".join(sorted(os.listdir(OUT))))

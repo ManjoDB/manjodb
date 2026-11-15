@@ -1,6 +1,6 @@
 # Research note: repository structure, now and after growth
 
-**Date:** 2026-10-03; **updated 2026-11-15 (Nx adopted).** **Status:** recommendation for M0 (plan §25). **Relates to:** `ManjoDB-Grand-Plan.md` §5.3–5.4, §14, §18.8, §25.2, §27, §29; `PRODUCT.md` (everything open source, confirmed 2026-10-03; Nx monorepo, confirmed 2026-11-15).
+**Date:** 2026-10-03; **updated 2026-11-15 (Nx adopted; SDK locations added).** **Status:** recommendation for M0 (plan §25). **Relates to:** `ManjoDB-Grand-Plan.md` §5.3–5.4, §14, §18.8, §25.2, §27, §29; `PRODUCT.md` (everything open source, confirmed 2026-10-03; Nx monorepo, confirmed 2026-11-15).
 
 > **Decision, 2026-11-15:** the monorepo is an **Nx workspace**. The first version of this note recommended a `justfile`, with a later upgrade to moon. That recommendation is **superseded**. The seam design (§3.1–3.2) is unchanged: Nx is how the seams are *enforced and built*. The workspace design is in §3.3, the trade-offs are in §3.4, and the facts it rests on are in the new sources [N1–N10].
 
@@ -48,10 +48,13 @@ manjodb/
 │  ├─ manjo-engine/           # planner, executor, transactions, receipts
 │  ├─ manjo-server/           # protocol v1
 │  ├─ manjo/                  # the `manjo` binary: CLI, shell, serve, mcp
+│  ├─ manjo-client/           # Rust remote client (proposal; its own seam, §3.5)
+│  ├─ manjo-node/             # Node-API glue for an embedded Node.js binding (experiment, §3.5)
 │  └─ xtask/                  # repo automation in Rust (codegen, release checks)
 ├─ packages/                  # ── SEAM B: TypeScript surface ──
 │  ├─ client/                 # @manjodb/client
-│  └─ schema/                 # @manjodb/schema
+│  ├─ schema/                 # @manjodb/schema
+│  └─ embedded/               # @manjodb/embedded: loads the built native file (experiment, §3.5)
 ├─ spec/                      # ── SEAM C: language-neutral contracts ──
 │  ├─ mql/                    # mql.ebnf, profiles
 │  ├─ protocol/               # OpenAPI + normative prose
@@ -112,8 +115,9 @@ manjodb/
 
 | Projects | Project file | Tags |
 | --- | --- | --- |
-| `crates/*` (the `manjo` binary also gets `type:app`) | `project.json` beside each `Cargo.toml` | `seam:engine`, `type:crate` |
-| `packages/client`, `packages/schema` | `package.json` (and a `project.json` only if needed) | `seam:typescript`, `type:lib` |
+| `crates/*` except `manjo-client` (the `manjo` binary also gets `type:app`) | `project.json` beside each `Cargo.toml` | `seam:engine`, `type:crate` |
+| `crates/manjo-client` (proposal) | `project.json` beside its `Cargo.toml` | `seam:rust-client`, `type:crate` |
+| `packages/client`, `packages/schema`, `packages/embedded` (experiment) | `package.json` (and a `project.json` only if needed) | `seam:typescript`, `type:lib` |
 | `spec` | `project.json` (targets: `generate`, `validate`) | `seam:spec`, `type:spec` |
 | `skills` | `project.json` | `seam:skills` |
 | `docs` | `package.json` | `seam:docs`, `type:app` |
@@ -125,6 +129,7 @@ manjodb/
 [
   { "sourceTag": "seam:engine",     "onlyDependOnLibsWithTags": ["seam:engine"] },
   { "sourceTag": "seam:typescript", "onlyDependOnLibsWithTags": ["seam:typescript", "seam:spec"] },
+  { "sourceTag": "seam:rust-client", "onlyDependOnLibsWithTags": ["seam:rust-client", "seam:spec"] },
   { "sourceTag": "seam:docs",       "onlyDependOnLibsWithTags": ["seam:docs", "seam:typescript", "seam:spec"] },
   { "sourceTag": "seam:skills",     "onlyDependOnLibsWithTags": ["seam:skills", "seam:spec"] },
   { "sourceTag": "seam:spec",       "onlyDependOnLibsWithTags": ["seam:spec"] }
@@ -186,6 +191,31 @@ manjodb/
 - **Mirroring internal packages to separate read-only repos** before anyone needs them.
 - **Letting Nx replace Cargo.** If a Rust task only works through the plugin, it will break when the plugin does.
 
+### 3.5 Where SDKs and bindings live
+
+The plan lists the SDK tiers (plan §14.1). This section says where each one is written. Rows marked *proposal* or *experiment* are not yet in the plan's decisions.
+
+| SDK or binding | Where | Seam and tags | Depends on | Status |
+| --- | --- | --- | --- | --- |
+| **TypeScript client and schema DSL** | `packages/client`, `packages/schema` in this repository | `seam:typescript` | `spec/` through generated files; the `manjo` binary only through task edges (§3.3) | Official from v0.1 (milestone M5). May move to `manjodb/manjodb-js` after protocol v1 freezes |
+| **Rust embedded API** | Inside the engine crate, `crates/manjo-engine` | `seam:engine` | The engine itself | v0.1, unstable until 1.0 (plan §14.6) |
+| **Rust remote client** | `crates/manjo-client` in this repository | `seam:rust-client`; may depend only on `spec/` | Its own wire codec, checked against the conformance fixtures; **never** engine crates | *Proposal.* Build it only if there is demand |
+| **Node.js embedded binding** | Rust glue in `crates/manjo-node`; npm package in `packages/embedded` | `seam:engine` (glue), `seam:typescript` (package) | The glue crate links the engine. The package loads the *built* native file through a task dependency on `manjo-node:build`, not a source import, so §3.2 rule 1 holds | *Experiment* (adoption note, A4). Per-platform prebuilt binaries and the packaging scheme are decided in the experiment |
+| **Python client** | Its own repository, `manjodb/manjodb-python` | Outside the monorepo | `spec/` conformance by pinned version | Official from v0.2 if a maintainer exists |
+| **Python embedded binding** (PyO3) | The same Python repository | Outside the monorepo | The *published* `manjo-engine` crate at an exact version (an artifact dependency) | *Experiment*, after pilots. Costly while the engine API is unstable |
+| **Go, JVM (with Kotlin), .NET** | One repository each, such as `manjodb/manjodb-go` | Outside the monorepo | `spec/` conformance by pinned version | Candidates for official status when a maintainer exists |
+| **PHP, Ruby, Swift, Dart, C/C++, and generated clients** | Outside the monorepo, usually owned by others | Community or experimental tier | `spec/protocol/` (OpenAPI) | No project guarantee |
+
+**Rules.**
+
+1. **Every SDK passes `spec/conformance/` against a real server** (plan §14.3), in whichever repository it lives. An SDK outside the monorepo pins a spec version and a server version.
+2. **No SDK reads engine internals.** The only exceptions are the embedded bindings, which link the engine by design and therefore track its unstable API.
+3. **Non-TypeScript SDKs are born in their own repositories**, for the reasons in §4.2: a different toolchain, maintainers, and release cadence.
+
+**Why the Rust remote client is in the monorepo.** It has the same toolchain and maintainers as the engine, and the protocol is not frozen, so it follows the TypeScript client's path: in this repository until 1.0, then a candidate to split (§4.2). It has its own tag and depends only on `spec/`, so it cannot link engine crates and can leave later without surgery. The alternative is `manjodb/manjodb-rust` from day one, which costs a version handshake on every protocol change before 1.0. A third option, sharing the value codec with the engine through `manjo-core`, saves some duplicate code but couples the client to the engine seam, so I did not propose it.
+
+**Why the Node.js binding is split in two.** The Rust glue must link the engine, and the npm package belongs with the other TypeScript packages. Joining them by a *task edge* (build the native file, then package it) keeps the seam rule intact, and `nx graph` shows the edge.
+
 ## 4. Splitting playbook (for when the business succeeds)
 
 ### 4.1 Triggers
@@ -211,6 +241,7 @@ Licensing is **not** a trigger: everything is open source (`PRODUCT.md`). If tha
 | 3 | Studio (when it starts, v0.2+) | `manjodb/studio` | UI toolchain and cadence; it is purely a protocol client |
 | 4 | `skills/` | `manjodb/skills` | Agent-skill directories and marketplaces index repositories; skills release with docs, not with the engine |
 | Late | `packages/client` | `manjodb/manjodb-js` | Only after protocol v1 freezes (1.0). Until then the reference client co-evolves with the server and must stay in the core repo. |
+| Late | `crates/manjo-client` (if built) | `manjodb/manjodb-rust` | The same trigger as the TypeScript client: after protocol v1 freezes |
 | **Never** | `crates/*` | stays in `manjodb/manjodb` | The engine layers change together. Splitting them repeats Prisma's coupling cost [M2]. |
 | **Never** | `examples/`, `bench/` | stay in core | They are integration tests of the engine |
 

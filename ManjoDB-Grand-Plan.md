@@ -4,7 +4,7 @@
 >
 > The architectural source of truth for ManjoDB: a single-node, graph-native database for applications that must answer *what is connected to what, and why*. This plan covers the product thesis, graph model, schema system, MQL, execution, storage, transactions, server protocol, SDKs, CLI, AI-native tooling, operations, testing, roadmap, and the research tracks that are deliberately *not* on the critical path.
 
-**Revision:** 4.5 — 2026-11-15. Revision 4.5 adds `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md` (§29). Revision 4.4 (the same day) records the license decision, Apache-2.0 (§29). Revision 4.3 (the same day) adopts Nx as the monorepo tool (§5.4). Revision 4.2 (the same day) added competitive, scaling, and adoption research, and four small architecture proposals (listed below). Revision 4.1 (2026-10-03) made three language changes:
+**Revision:** 4.6 — 2026-11-15. Revision 4.6 records where SDKs and bindings live (§14.1; [`research/monorepo-structure.md`](research/monorepo-structure.md) §3.5). Revision 4.5 (the same day) adds `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, and `SECURITY.md` (§29). Revision 4.4 (the same day) records the license decision, Apache-2.0 (§29). Revision 4.3 (the same day) adopts Nx as the monorepo tool (§5.4). Revision 4.2 (the same day) added competitive, scaling, and adoption research, and four small architecture proposals (listed below). Revision 4.1 (2026-10-03) made three language changes:
 
 - MQL bindings are now declared name-first (`find dependency: Service`), and `as` only renames output columns.
 - Default output keys are now `<binding>_<property>`.
@@ -308,9 +308,12 @@ crates/manjo-graph     graph layer over the KV substrate; catalog; constraints
 crates/manjo-engine    planner, executor, transactions, receipts, paths
 crates/manjo-server    HTTP protocol v1, auth, limits
 crates/manjo           the `manjo` binary (CLI, shell, serve, mcp)
+crates/manjo-client    Rust remote client (proposal, §14.1)
+crates/manjo-node      Node-API glue for an embedded Node.js binding (experiment, §14.6)
 crates/xtask           repo automation in Rust (codegen, release checks)
 packages/client        @manjodb/client  (TypeScript)
 packages/schema        @manjodb/schema  (TypeScript schema DSL → schema document)
+packages/embedded      @manjodb/embedded: loads the built native file (experiment, §14.6)
 spec/                  grammar, protocol (OpenAPI), JSON Schemas, error registry,
                        capability registry, conformance fixtures, query corpus
 skills/                agent skills (§18.5)
@@ -1399,8 +1402,11 @@ Revision 3 planned twelve ecosystems in waves. For a small team that is not cred
 - **TypeScript is official from v0.1.**
 - **Python is official from v0.2**, for data and agent workloads, if a maintainer exists.
 - **Rust embedded** is part of the engine crate.
+- **Rust remote client** *(proposal)*: `crates/manjo-client` in the monorepo until protocol v1 freezes. It depends only on `spec/`, never on engine crates.
 - **Go, JVM (Java plus a Kotlin coroutine facade), and .NET** are the next *candidates* for official status. Each is promoted only when it has a maintainer and passes conformance. Their idiom requirements are kept in Appendix F so the protocol does not harden around TypeScript assumptions.
 - **Everything else is Community or Experimental.** That includes PHP, Ruby, Swift, Dart, and C/C++.
+
+**Where each SDK lives.** The TypeScript packages are in the monorepo (`packages/`). Every other language is born in its own repository and consumes `spec/` conformance by pinned version. The full table, including the embedded bindings, is in [`research/monorepo-structure.md`](research/monorepo-structure.md) §3.5.
 
 ### 14.2 TypeScript client (`@manjodb/client`)
 
@@ -1512,7 +1518,7 @@ Generated types never claim non-null for a column that can be missing, and gener
 - `db.write_tx(|tx| …)`
 - `Database::open_in_memory()` for tests, which explicitly provides no durability.
 
-The API is unstable before 1.0. Node.js and Python bindings over the embedded engine (napi-rs, PyO3) are **[Experiment]**. They would remove the extra process (H4), but they add per-platform build and support burden. Decide after the pilot interviews.
+The API is unstable before 1.0. Node.js and Python bindings over the embedded engine (napi-rs, PyO3) are **[Experiment]**. They would remove the extra process (H4), but they add per-platform build and support burden. Decide after the pilot interviews. If built, the Node.js binding is a Rust glue crate (`crates/manjo-node`) plus an npm package (`packages/embedded`) that loads the built native file, and the Python binding lives in the Python repository and depends on the published engine crate (`research/monorepo-structure.md` §3.5).
 
 ## 15. Studio (database IDE) — v0.2+
 
