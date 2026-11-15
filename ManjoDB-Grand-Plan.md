@@ -4,7 +4,7 @@
 >
 > The architectural source of truth for ManjoDB: a single-node, graph-native database for applications that must answer *what is connected to what, and why*. This plan covers the product thesis, graph model, schema system, MQL, execution, storage, transactions, server protocol, SDKs, CLI, AI-native tooling, operations, testing, roadmap, and the research tracks that are deliberately *not* on the critical path.
 
-**Revision:** 4.1 — 2026-10-03. Revision 4.1 makes three language changes:
+**Revision:** 4.2 — 2026-11-15. Revision 4.2 adds competitive, scaling, and adoption research, and four small architecture proposals (listed below). Revision 4.1 (2026-10-03) made three language changes:
 
 - MQL bindings are now declared name-first (`find dependency: Service`), and `as` only renames output columns.
 - Default output keys are now `<binding>_<property>`.
@@ -17,6 +17,13 @@ Revision 4.1 also adds:
 - the repository-structure research and seam rules ([`research/monorepo-structure.md`](research/monorepo-structure.md), §5.4);
 - the confirmed all-open-source scope (§29);
 - the brand identity (`brand/`, Commit Lanes).
+
+Revision 4.2 adds:
+
+- the competitive landscape, including OrientDB ([`research/competitive-landscape.md`](research/competitive-landscape.md));
+- a staged scale-out path, and why single-node is a stage rather than a ceiling ([`research/scaling-path.md`](research/scaling-path.md), §28);
+- the adoption strategy and a license candidate ([`research/developer-adoption-strategy.md`](research/developer-adoption-strategy.md), §29);
+- proposals to keep scale-out open: a logical commit log (§10.2), `commit_seq` in results (§8.8), reserved partition bits in IDs (§6.2), and a distributed-substrate feasibility experiment (§10.6).
 
 **Document status:** proposed architecture. **Implementation status:** nothing described here is implemented, released, benchmarked, or user-tested. Every command, package name, port, endpoint, configuration key, and MQL example is a proposed interface. Package names, domains, registry namespaces, and container repositories must be checked and secured before use.
 
@@ -134,6 +141,7 @@ The table below names, for each situation, the option that can be enough and wha
 | Fixed-hop relationship loading | Joins, eager loading, projections [P2] | Nothing, unless graph integrity or evidence matters |
 | Authorization checks | A dedicated relationship-based authorization service [P5] | ManjoDB does **not** compete as an enforcement engine (§2) |
 | Data lineage | OpenLineage-based tooling [P4] | ManjoDB can be a store *behind* such tooling, not a replacement |
+| Another graph database (Neo4j, ArcadeDB, Memgraph, others) | Mature products; Neo4j leads the graph category | Narrow job, continuity, and trust: see [`research/competitive-landscape.md`](research/competitive-landscape.md). Not breadth or raw speed |
 | Embedded analytical graph queries | Embedded graph engines; note that the Kùzu repository was archived in October 2025 [R10] | Long-term maintainability and a focused scope. Sustainability is a product requirement, not an afterthought. |
 | Large-scale graph analytics | Dedicated analytics frameworks, or exporting to NetworkX/igraph | Not a v0.1–1.0 goal (§28) |
 
@@ -146,7 +154,7 @@ ManjoDB, through 1.0, is **not**:
 - a general-purpose replacement for a relational database, a document store, or OLAP;
 - an authorization/policy engine. It can *store and explain* relationship evidence; enforcement belongs to a policy service;
 - a vector database or a RAG framework. Vector candidates come from external indexes (§28);
-- a distributed, replicated, or multi-region database. Single node only (§28);
+- a distributed, replicated, or multi-region database *before 1.0*. Single node is the first stage of a path, not a ceiling: the staged path and the choices that keep it open are in §28 and [`research/scaling-path.md`](research/scaling-path.md);
 - a graph-analytics platform. Only bounded reachability and shortest-path are in the core (§9.7);
 - a blob or document store. Property values are bounded scalars (§6.4);
 - a GraphQL server, or a Cypher/GQL-compatible endpoint (§8.12);
@@ -339,7 +347,7 @@ A single fixed type gives a node a clear schema, a natural type-scan partition, 
 
 ### 6.2 Identity
 
-- `NodeId` and `EdgeId` are distinct `u64` newtypes, allocated from separate monotonic counters. **IDs are never reused.** The counters are persisted in the same transaction as the allocation.
+- `NodeId` and `EdgeId` are distinct `u64` newtypes, allocated from separate monotonic counters. **IDs are never reused.** The counters are persisted in the same transaction as the allocation. **Candidate (needs RFC-0001):** reserve the top 12 bits of each ID as a *partition field*, zero until sharding exists, so a later sharded stage can allocate IDs per partition without renumbering. It leaves about 4.5 × 10^15 IDs per partition and costs nothing today (§28).
 - IDs are scoped to a database UUID, generated at `manjo init`. An ID from one database is meaningless in another. Logical export/import preserves IDs (§17.4).
 - Physical location is never identity.
 - On the wire, IDs are decimal strings (§13.4). Node and edge IDs are different kinds: comparing one with the other is a validation error, even when the digits match.
@@ -718,6 +726,7 @@ The response below is for `show friend._id, friend.name, k._id as edge_id, k.sin
 - **`continuation`** is one of `"cursor"`, `"none"`, or `"unsupported_distinct"`.
 - **A request either returns a complete, correct page or fails.** Budget exhaustion is an error, never a success-shaped partial result.
 - `meta.snapshot` identifies the read snapshot for diagnostics only. It does not promise that snapshot can be replayed later.
+- `meta.commit_seq` is the monotonic sequence number of the latest commit visible to the read. Write receipts carry the `commit_seq` of their own commit. It is always satisfied on a single node, and it exists so that replicas can later honor a "read at least this commit" request without a protocol change (§28).
 - Nested document output is **[v0.2+ Research]**.
 
 ### 8.9 Write documents
@@ -1079,6 +1088,7 @@ T/{node_type_id}/{node_id}             type membership
 I/{index_id}/{encoded value}/{node_id} equality / unique index
 D/{node_id}/{dir}/{rel_type_id}        degree counter (candidate, see S2)
 R/{request_id}                         write receipt (§11.5)
+L/{commit_seq}                         logical commit log entry: request ID, principal, changeset (candidate, see below)
 ```
 
 - All integers in keys are big-endian, so byte order equals numeric order.
@@ -1087,6 +1097,7 @@ R/{request_id}                         write receipt (§11.5)
 - Strings above an inline threshold may move to a separate key family; S2 decides.
 - Every decoder validates lengths and bounds before reading.
 - A format-version byte prefixes every record family. An unknown version is a hard error, never a guess.
+- **Logical commit log (candidate).** Each write document appends one `L/{commit_seq}` entry in the same substrate transaction. It holds the *changeset* (created, updated, and removed objects with final values), not the statement text. It is one primitive that serves replication, the outbound change feed (§16.5), incremental backup, point-in-time recovery, and audit. Retention is bounded, and its write amplification is measured in experiment S3 (§10.6). Rationale and alternatives: [`research/scaling-path.md`](research/scaling-path.md) §4.
 
 ### 10.3 Adjacency
 
@@ -1129,6 +1140,7 @@ They feed `explain`, early budget refusal, `describe`, and observed shape. Stati
 | **S2 Adjacency** | One key per edge, or packed segments? Degree counters? Inline or separate strings? | Workload-driven benchmarks: dependency and lineage queries, hub expansions, bulk import, delete-with-edges | Key layout v1 |
 | **S3 Write amplification** | Bytes written per logical edge insert or delete, and per import batch | Substrate I/O counters plus OS-level write accounting | Batch sizes, encoding |
 | **S4 Long readers** | File growth when snapshots live for the full read deadline under write load | Soak test | Read deadline default, compaction guidance |
+| **S5 Distributed substrate (research)** | Per-hop latency and operational cost of the same graph layer on a distributed transactional store (FoundationDB or TiKV), against the embedded stores | Prototype the substrate trait on one distributed store; run the reference traversals | Whether a distributed-substrate path is worth keeping open (§28). Not a v0.1 commitment |
 
 The result of each experiment must be written up, with data, before the related decision is frozen in RFC-0001.
 
@@ -2240,6 +2252,29 @@ The plan assumes a very small team. "Specialist" in the table means the work nee
 
 These are separate products or open research problems. None is scheduled, and each would need its own thesis, RFCs, and gates.
 
+**Single node is stage S0 of a staged path, not a ceiling.** The path, its evidence, and what would change it are in [`research/scaling-path.md`](research/scaling-path.md):
+
+| Stage | Product | Status |
+| --- | --- | --- |
+| **S0** | Single-node database (v0.1 to 1.0) | Planned |
+| **S1** | Replicated: one primary, read replicas, from the logical commit log (§10.2) | Research; after 1.0 |
+| **S2** | Highly available, through a tested consensus library | Research |
+| **S3** | Managed single-node or HA service | Research |
+| **S4** | Property and payload sharding, with topology on one replicated group (the approach Neo4j's Infinigraph takes) | Research; the realistic scale-out path |
+| **S5** | Partitioned graph (topology itself sharded) | Open research problem |
+
+**Decide now, to keep the path open** (each is a proposal needing RFC review, none is a result):
+
+1. a logical commit log, `L/{commit_seq}` (§10.2);
+2. `commit_seq` in every result and receipt, and a reserved `read.min_commit_seq.v1` capability (§8.8);
+3. reserved partition bits in IDs (§6.2);
+4. deterministic write documents: no clock or random functions in MQL, with time and randomness passed as parameters;
+5. a narrow substrate trait, plus the distributed-substrate feasibility experiment S5 (§10.6);
+6. "single writer" as a capability, never a protocol assumption;
+7. no multi-node claims in documentation until a stage ships.
+
+The detailed track table follows.
+
 | Track | Product it implies | Unresolved questions | Prerequisite |
 | --- | --- | --- | --- |
 | **Replication** | Replicated single-graph database | Log shipping from substrate commits or from a logical change log; snapshot installation; follower reads with commit-position tokens; replicated durability versus single-node durability | Stable 1.0 storage and change feed |
@@ -2255,7 +2290,8 @@ These are separate products or open research problems. None is scheduled, and ea
 ## 29. Project governance, documentation, and openness
 
 - **Open-source scope (confirmed 2026-10-03):** everything is open source, including the engine, CLI, SDKs, schema DSL, MCP adapter, skills, and Studio. No closed-source components are planned. Any revenue (hosting, support) would be a hypothesis for after 1.0, and integrity checking, backup, and restore are never withheld.
-- **Licensing:** **undecided.** It must be decided, with qualified advice, before outside contributions are accepted, together with the contribution terms (DCO or CLA). A source-available license must not be called open source.
+- **Licensing:** **undecided, with a candidate.** It must be decided, with qualified legal advice, before outside contributions are accepted, together with the contribution terms. A source-available license must not be called open source. **Candidate** ([`research/developer-adoption-strategy.md`](research/developer-adoption-strategy.md) §6): Apache-2.0 for all code; a written commitment never to relicense to a source-available license and never to gate backup, restore, integrity checking, or high availability; a DCO rather than a CLA, so contributors keep their copyright; a trademark policy that protects the names and mark while permitting forks under other names; and a neutral foundation as a later goal. The field's trust failures (Redis, ArangoDB, Memgraph, FalkorDB) are why this decision is made early.
+- **Sustainability:** an explicit workstream with a decision at the product gate (§26). No revenue model may require gating correctness or recovery features. Options and evidence: the adoption note §7.
 - **Governance documents:** CONTRIBUTING, CODE_OF_CONDUCT, SECURITY (private reporting), the RFC process, supported-version policy, release checklist, and an owner per subsystem.
 - **RFCs:** M0 starts with RFC-0001 to RFC-0005 (§25.2). Further RFCs:
   - RFC-0006 backup format;

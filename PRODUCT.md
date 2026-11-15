@@ -31,7 +31,7 @@ ManjoDB is a small, precise relationship database with:
 - enforced graph integrity (endpoint-typed relationships, safe deletes, unique business keys);
 - AI-native contracts (validator loop, MCP profiles) that never bypass the database's safety model.
 
-It deliberately does not compete on raw speed, distribution, or analytics.
+It deliberately does not compete on raw speed or analytics. Scale-out is sequenced after 1.0 (single node, then replicas, then HA, then sharding; see `research/scaling-path.md`), not excluded.
 
 ## Operating Context
 
